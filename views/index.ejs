@@ -1,0 +1,39 @@
+<%- include('partials/header') %>
+<div class="page-wrapper">
+
+<section class="create-box">
+  <form action="/tasks" method="POST" id="createForm">
+    <input name="text" id="taskInput" placeholder="Add a new task…" autocomplete="off" />
+    <select name="priority">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+  <% if (alert) { %>
+    <p class="alert"><%= alert %></p>
+  <% } %>
+</section>
+
+<ul class="task-list">
+  <% tasks.forEach(task => { %>
+    <li>
+      <span><%= task.title %> - <%= task.priority %></span>
+      <form action="/tasks/delete/<%= task._id %>" method="POST" style="display:inline;">
+        <button type="submit" title="Delete">🗑️</button>
+      </form>
+      <form action="/tasks/edit/<%= task._id %>" method="POST" style="display:inline;">
+        <input name="text" value="<%= task.title %>" />
+        <select name="priority">
+          <option value="low" <%= task.priority === "low" ? "selected" : "" %>>Low</option>
+          <option value="medium" <%= task.priority === "medium" ? "selected" : "" %>>Medium</option>
+          <option value="high" <%= task.priority === "high" ? "selected" : "" %>>High</option>
+        </select>
+        <button type="submit" title="Edit">✏️</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+</div>
+
